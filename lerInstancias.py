@@ -1,5 +1,5 @@
 def carrega_instancias(arquivo):
-    instancias = open("instancias_teste/arquivo.txt", "r")
+    instancias = open("instancias_teste/" + arquivo + '.txt', "r")
     lines = instancias.readlines()
     
     pontos = {}
