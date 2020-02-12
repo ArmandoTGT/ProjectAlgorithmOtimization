@@ -1,48 +1,62 @@
-def carrega_instancias(arquivo):
-    instancias = open("instancias_teste/" + arquivo + '.txt', "r")
-    lines = instancias.readlines()
+class ler_instancias():
     
-    pontos = {}
-    matrix = []
-    
-    dimensao = 0
-    capacidade = 0
-    
-    linhaDePontos = False
-    linhaDeMatrix = False
-    
-    for line in lines:
-        line = line.replace('\n', '')
+    def __init__(self, arquivo):
+        instancias = open("instancias_teste/" + arquivo + '.txt', "r")
+        lines = instancias.readlines()
         
-        if line.__contains__("DIMENSION:"):
-            lineDividida = line.split()
-            dimensao = lineDividida[1]
+        self.pontos = {}
+        self.matrix = []
+        
+        self.dimensao = 0
+        self.capacidade = 0
+        
+        linhaDePontos = False
+        linhaDeMatrix = False
+        
+        for line in lines:
+            line = line.replace('\n', '')
             
-        if line.__contains__("CAPACITY:"):
-            lineDividida = line.split()
-            capacidade = lineDividida[1]        
-          
-        if line.__contains__("DEMAND_SECTION:") or linhaDePontos:
-            linhaDePontos = True
-            if line.__contains__("DEMAND_SECTION:"):
-                continue
-            lineDividida = line.split()        
-            if(len(lineDividida) == 0):
-                linhaDePontos = False
-            else:
-                pontos[lineDividida[0]] = lineDividida[1]
+            if line.__contains__("DIMENSION:"):
+                lineDividida = line.split()
+                self.dimensao = lineDividida[1]
                 
-        if line.__contains__("EDGE_WEIGHT_SECTION") or linhaDeMatrix:
-            linhaDeMatrix = True
-            if line.__contains__("EDGE_WEIGHT_SECTION"):
-                continue
-            lineDividida = line.split()        
-            if(len(lineDividida) == 0):
-                linhaDeMatrix = False
+            if line.__contains__("CAPACITY:"):
+                lineDividida = line.split()
+                self.capacidade = lineDividida[1]        
+              
+            if line.__contains__("DEMAND_SECTION:") or linhaDePontos:
+                linhaDePontos = True
+                if line.__contains__("DEMAND_SECTION:"):
+                    continue
+                lineDividida = line.split()        
+                if(len(lineDividida) == 0):
+                    linhaDePontos = False
+                else:
+                    self.pontos[lineDividida[0]] = lineDividida[1]
+                    
+            if line.__contains__("EDGE_WEIGHT_SECTION") or linhaDeMatrix:
+                linhaDeMatrix = True
+                if line.__contains__("EDGE_WEIGHT_SECTION"):
+                    continue
+                lineDividida = line.split()        
+                if(len(lineDividida) == 0):
+                    linhaDeMatrix = False
+                else:
+                    self.matrix.append(lineDividida)    
             else:
-                matrix.append(lineDividida)    
-        else:
-            continue
+                continue
     
-    return pontos, matrix, dimensao, capacidade
+
+    def get_pontos(self):       
+        return self.pontos
+    
+    def get_matrix(self):       
+        return self.matrix
+    
+    def get_dimensao(self):       
+        return self.dimensao
+    
+    def get_capacidade(self):       
+        return self.capacidade
+    
         

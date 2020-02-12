@@ -1,8 +1,12 @@
-from lerInstancias import carrega_instancias
+from lerInstancias import ler_instancias
         
 class ClosestNeighbor:
     def __init__(self):
-        self._demand, self._distance_matrix, self._matrix_dimension, self._truck_max_capacity = carrega_instancias("P-n16-k8")
+        loader = ler_instancias("P-n16-k8")
+        self._demand = loader.get_pontos()
+        self._distance_matrix = loader.get_matrix()
+        self._matrix_dimension = loader.get_dimensao()
+        self._truck_max_capacity = loader.get_capacidade()
         
         # Normalização dos valores para integer
         for i in range(len(self._distance_matrix)):
@@ -47,6 +51,7 @@ class ClosestNeighbor:
                 # Se o próximo passo acabar o while, já adicionamos o CD para ele voltar e seu peso final
                 if not len(visited_points) < len(self._demand):
                     self._truck_path[truck].append(0)
+                    total_distance += self._distance_matrix[closest_node][0]
                     self._truck_path[truck].append(truck_weight)
                     self._truck_path[truck].append(total_distance)
                 i = closest_node
@@ -54,6 +59,7 @@ class ClosestNeighbor:
             else:
                 # Caminhão não conseguiu e voltou para o CD, adicionamos no final, quanto ficou sobrando e ele vai percorrer
                 self._truck_path[truck].append(0)
+                total_distance += self._distance_matrix[closest_node][0]
                 self._truck_path[truck].append(truck_weight)
                 self._truck_path[truck].append(total_distance)
                 truck_weight = self._truck_max_capacity
