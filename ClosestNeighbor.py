@@ -54,6 +54,7 @@ class ClosestNeighbor:
                     total_distance += self._distance_matrix[closest_node][0]
                     self._truck_path[truck].append(truck_weight)
                     self._truck_path[truck].append(total_distance)
+                # Local onde começaremos a verificação do próximo ponto é o nó mais próximo
                 i = closest_node
 
             else:
@@ -68,6 +69,7 @@ class ClosestNeighbor:
                 total_distance = 0
                 self._truck_path[truck] = []
                 self._truck_path[truck].append(0)
+                i = 0
             # print(sorted(visited_points))
         # print(self._truck_path)
 
