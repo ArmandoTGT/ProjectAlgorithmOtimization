@@ -18,15 +18,17 @@ class ClosestNeighbor:
         self._truck_max_capacity = int(self._truck_max_capacity)
 
         # Caminhos a se tomar
+        self._truck = 0
         self._truck_path = {}
+        self._truck_capacity = {}
+        self._truck_total_distance = {}
 
     def closestNeighbor(self):
         # O caminhão sai do CD, q é o ponto zero
         truck_weight = int(self._truck_max_capacity)
         i = 0
-        truck = 0
         visited_points = [0]
-        self._truck_path[truck] = [0]
+        self._truck_path[self._truck] = [0]
         total_distance = 0
         print(self._demand)
         while len(visited_points) < len(self._demand):
@@ -45,45 +47,92 @@ class ClosestNeighbor:
             
             if truck_capacity:
                 truck_weight = truck_weight - self._demand[str(closest_node)]
-                self._truck_path[truck].append(closest_node)
+                self._truck_path[self._truck].append(closest_node)
                 total_distance += closest_distance
                 visited_points.append(closest_node)
                 # Se o próximo passo acabar o while, já adicionamos o CD para ele voltar e seu peso final
                 if not len(visited_points) < len(self._demand):
-                    self._truck_path[truck].append(0)
+                    self._truck_path[self._truck].append(0)
                     total_distance += self._distance_matrix[closest_node][0]
-                    self._truck_path[truck].append(truck_weight)
-                    self._truck_path[truck].append(total_distance)
+                self._truck_capacity[self._truck] = truck_weight
+                self._truck_total_distance[self._truck] = total_distance
                 # Local onde começaremos a verificação do próximo ponto é o nó mais próximo
                 i = closest_node
 
             else:
                 # Caminhão não conseguiu e voltou para o CD, adicionamos no final, quanto ficou sobrando e ele vai percorrer
-                self._truck_path[truck].append(0)
+                self._truck_path[self._truck].append(0)
                 total_distance += self._distance_matrix[closest_node][0]
-                self._truck_path[truck].append(truck_weight)
-                self._truck_path[truck].append(total_distance)
+                self._truck_capacity[self._truck] = truck_weight
+                self._truck_total_distance[self._truck] = total_distance
                 truck_weight = self._truck_max_capacity
                 # Novo caminhão que vai ter que sair do CD
-                truck += 1
+                self._truck += 1
                 total_distance = 0
-                self._truck_path[truck] = []
-                self._truck_path[truck].append(0)
+                self._truck_path[self._truck] = []
+                self._truck_path[self._truck].append(0)
                 i = 0
-            # print(sorted(visited_points))
-        # print(self._truck_path)
 
     def printPaths(self):
         for truck in self._truck_path:
             print("Caminhão", truck)
-            print("Caminho de pontos", self._truck_path[truck][:-2])
-            print("Lotação do caminhão", self._truck_max_capacity - self._truck_path[truck][-2])
-            print("Distância percorrida", self._truck_path[truck][-1], '\n')
+            print("Caminho de pontos", self._truck_path[truck])
+            print("Espaço no caminhão", self._truck_capacity[truck])
+            print("Distância percorrida", self._truck_total_distance[truck], '\n')
+
+    def get_route(self, truck):
+        return self._truck_path[truck]
+    
+    def get_route_total_distance(self, truck):
+        return self._truck_total_distance[truck]
+
+    def get_truck_path(self):
+        return self._truck_path
+    
+    def get_truck_capacity(self):
+        return self._truck_capacity
+    
+    def get_truck_total_distance(self):
+        return self._truck_total_distance
+
+    def get_number_of_trucks(self):
+        return self._truck
+
+    def get_distance_matrix(self):
+        return self._distance_matrix
 
                     
 
 
-                
+'''
 HeuristicAlgorithm = ClosestNeighbor()
 HeuristicAlgorithm.closestNeighbor()
-HeuristicAlgorithm.printPaths()
+paths = HeuristicAlgorithm.get_truck_path()
+capacities = HeuristicAlgorithm.get_truck_capacity()
+total_distances = HeuristicAlgorithm.get_truck_total_distance()
+trucks = HeuristicAlgorithm.get_number_of_trucks()
+
+
+def __init__(self):
+    self.HeuristicAlgorithm = ClosestNeighbor()
+    HeuristicAlgorithm.closestNeighbor()
+    self._paths = HeuristicAlgorithm.get_truck_path()
+    self._total_distances = HeuristicAlgorithm.get_truck_total_distance()
+    self._matrix = HeuristicAlgorithm.get_distance_matrix()
+
+def closestNeighbor(self, solution, number_of_neighbours):
+    if solution == "insertion":
+        for iteration in range(number_of_neighbours):
+            for i in range(self.HeuristicAlgorithm.get_number_trucks()):
+                self._paths[i] = self.insertion(self._paths[i], self._matrix, self._total_distances[i])
+    
+    elif solution == "swap":
+        for iteration in range(number_of_neighbours):
+            for i in range(self.HeuristicAlgorithm.get_number_trucks()):
+                self._paths[i] = self.insertion(self._paths[i], self._matrix, self._total_distances[i])
+
+    elif solution == "2-opt":
+        for iteration in range(number_of_neighbours):
+            for i in range(self.HeuristicAlgorithm.get_number_trucks()):
+                self._paths[i] = self.insertion(self._paths[i], self._matrix, self._total_distances[i])
+'''
