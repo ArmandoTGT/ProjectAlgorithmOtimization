@@ -2,7 +2,7 @@ from lerInstancias import ler_instancias
         
 class ClosestNeighbor:
     def __init__(self):
-        loader = ler_instancias("P-n23-k8")
+        loader = ler_instancias("P-n19-k2")
         self._demand = loader.get_pontos()
         self._distance_matrix = loader.get_matrix()
         self._matrix_dimension = loader.get_dimensao()
