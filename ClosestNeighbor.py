@@ -2,7 +2,7 @@ from lerInstancias import ler_instancias
         
 class ClosestNeighbor:
     def __init__(self):
-        loader = ler_instancias("P-n16-k8")
+        loader = ler_instancias("P-n23-k8")
         self._demand = loader.get_pontos()
         self._distance_matrix = loader.get_matrix()
         self._matrix_dimension = loader.get_dimensao()
@@ -30,7 +30,7 @@ class ClosestNeighbor:
         visited_points = [0]
         self._truck_path[self._truck] = [0]
         total_distance = 0
-        print(self._demand)
+        #print(self._demand)
         while len(visited_points) < len(self._demand):
             closest_distance = 99999999
             # O primeiro ponto mais próximo é ele mesmo
@@ -99,10 +99,14 @@ class ClosestNeighbor:
         return self._truck
 
     def get_distance_matrix(self):
-        return self._distance_matrix
+        return self._distance_matrix              
 
-                    
-
+HeuristicAlgorithm = ClosestNeighbor()
+HeuristicAlgorithm.closestNeighbor()
+paths = HeuristicAlgorithm.get_truck_path()
+capacities = HeuristicAlgorithm.get_truck_capacity()
+total_distances = HeuristicAlgorithm.get_truck_total_distance()
+trucks = HeuristicAlgorithm.get_number_of_trucks()
 
 '''
 HeuristicAlgorithm = ClosestNeighbor()
