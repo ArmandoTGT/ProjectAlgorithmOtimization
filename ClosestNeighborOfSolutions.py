@@ -33,31 +33,26 @@ class ClosestNeighborOfSolutions:
             p2_a1 = p1_a1 +1
             #print(route[p1_a1], route[p2_a1])
             for p1_a2 in range(p2_a1+2, len(route)-1):
-                p2_a2 = p1_a2 +1
-                new_total_distance = current_total_distance                                    
-                print(new_total_distance)
+                p2_a2 = p1_a2 +1                
+                new_total_distance = current_total_distance 
+                
                 new_total_distance -= matrix[route[p1_a1]][route[p2_a1]]
-                print(new_total_distance)                    
-                new_total_distance -= matrix[route[p1_a2]][route[p2_a2]]
-                print(new_total_distance)
+                new_total_distance -= matrix[route[p1_a2]][route[p2_a2]]                
                              
-                new_total_distance += matrix[route[p1_a1]][route[p1_a2]]
-                print(matrix[route[p1_a1]][route[p1_a2]], "====")
-                print(new_total_distance)
+                new_total_distance += matrix[route[p1_a1]][route[p1_a2]] 
                 new_total_distance += matrix[route[p2_a1]][route[p2_a2]]
-                print(matrix[route[p2_a1]][route[p2_a2]], "======")
-                print(new_total_distance)
-                #print(route[p1_a1], route[p2_a1], route[p1_a2], route[p2_a2])
+               
                 if(new_total_distance < best[0]):
                     best[0] = new_total_distance
                     best[1] = p2_a1
                     best[2] = p1_a2
         
         if(best[0] < current_total_distance):
-            print(best[0])
+            #print(best[0])
             route[best[1]], route[best[2]] = route[best[2]], route[best[1]]
+            return route, best[0]
             
-        return route
+        return route, current_total_distance
     
     def insertion(self, route, matrix, current_total_distance):
         best = [current_total_distance, 0, 0]
@@ -65,7 +60,7 @@ class ClosestNeighborOfSolutions:
              if route[index] != 0:
                  for index_insertion in range(1, len(route)-1):
                      new_total_distance = current_total_distance 
-                     print(route[index], route[index_insertion])
+                     
                      if route[index-1] != route[index_insertion] and route[index] != route[index_insertion] and route[index+1] != route[index_insertion]:
                          
                          
@@ -85,12 +80,13 @@ class ClosestNeighborOfSolutions:
         
         
         if(best[0] < current_total_distance):
-            print(best[0])
+            #print(best[0])
             aux = route.pop(best[1])            
             route.insert(best[2], aux)
+            return route, best[0]
             
         
-        return route            
+        return route, current_total_distance           
             
     def swap(self, route, matrix, current_total_distance):
         best = [current_total_distance, 0, 0]
@@ -115,24 +111,25 @@ class ClosestNeighborOfSolutions:
                     best[2] = index_swap
         
         if(best[0] < current_total_distance):
-            print(best[0])
+            #print(best[0])
             route[best[1]], route[best[2]] = route[best[2]], route[best[1]]
+            return route, best[0]
             
-        return route
+        return route, current_total_distance
     
-    def teste(self):
-        "0+21+7+21+29 = 78"
+    def teste(self):       
         #[0, 1, 10, 12, 15, 4, 11, 3, 8, 18, 14, 0] 172
         
         #[0, 21, 16, 1, 10, 13, 0] 72
-        #[0, 21, 16, 13, 10, 1, 0] 71 - opt2
-        #[0, 21, 16, 13, 10, 1, 0] 71 - swap
-        solucao = [0, 21, 16, 1, 10, 13, 0]
-        distancia = 71
+        #[0, 21, 16, 13, 10, 1, 0] 70 - opt2
+        #[0, 21, 16, 13, 10, 1, 0] 70 - swap
+        solucao = [0, 1, 10, 12, 15, 4, 11, 3, 8, 18, 14, 0]
+        distancia = 172
         print("Solução inicial", solucao)
         print("Distância total", distancia)
-        new_route = self.opt_2(solucao, self._matrix, distancia)
+        new_route, custo = self.opt_2(solucao, self._matrix, distancia)
         print("Solução vizinha", new_route)
+        print("Custo da solução", custo)
     
 
 buscaLocal = ClosestNeighborOfSolutions()
