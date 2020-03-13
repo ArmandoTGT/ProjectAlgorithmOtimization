@@ -47,9 +47,16 @@ class ClosestNeighborOfSolutions:
                     best[1] = p2_a1
                     best[2] = p1_a2
         
-        if(best[0] < current_total_distance):
-            #print(best[0])
-            route[best[1]], route[best[2]] = route[best[2]], route[best[1]]
+        if (best[0] < current_total_distance):            
+            changed_points = range(best[1], best[2])
+            
+           
+            for i, j in zip(changed_points, reversed(changed_points)):
+                if i >= j:
+                    break
+                else:
+                    route[i], route[j] = route[j], route[i]
+            
             return route, best[0]
             
         return route, current_total_distance
