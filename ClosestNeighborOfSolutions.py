@@ -2,30 +2,30 @@ from ClosestNeighbor import ClosestNeighbor
 
 class ClosestNeighborOfSolutions:
     
-    def __init__(self):
-        
-        HeuristicAlgorithm = ClosestNeighbor()
-        HeuristicAlgorithm.closestNeighbor()
-        self._paths = HeuristicAlgorithm.get_truck_path()
-        self._total_distances = HeuristicAlgorithm.get_truck_total_distance()
-        self._matrix = HeuristicAlgorithm.get_distance_matrix()
+    def __init__(self, paths, total_distances, matrix):
+        self._paths = paths
+        self._total_distances = total_distances
+        self._matrix = matrix
 
-    def closestNeighbor(self, solution, number_of_neighbours):
+    def localResearch(self, solution, number_of_neighbours):
         if solution == "2-opt":
             for iteration in range(number_of_neighbours):
-                for i in range(self.HeuristicAlgorithm.get_number_trucks()):
-                    self._paths[i] = self.opt_2(self._paths[i], self._matrix, self._total_distances[i])
+                for i in range(len(self._paths)):
+                    self._paths[i], self._total_distances[i] = self.opt_2(self._paths[i], self._matrix, self._total_distances[i])
                     
         elif solution == "swap":
             for iteration in range(number_of_neighbours):
-                for i in range(self.HeuristicAlgorithm.get_number_trucks()):
-                    self._paths[i] = self.swap(self._paths[i], self._matrix, self._total_distances[i])
-    
+                for i in range(len(self._paths)):
+                    self._paths[i], self._total_distances[i] = self.swap(self._paths[i], self._matrix, self._total_distances[i])
+                    
         elif solution == "insertion":
             for iteration in range(number_of_neighbours):
-                for i in range(self.HeuristicAlgorithm.get_number_trucks()):
-                    self._paths[i] = self.insertion(self._paths[i], self._matrix, self._total_distances[i])
-    
+                for i in range(len(self._paths)):
+                    self._paths[i], self._total_distances[i] = self.insertion(self._paths[i], self._matrix, self._total_distances[i])
+                    
+        else:
+            print("Non declared local research, choose between insertion, swap and 2-opt local researches")
+        return self._paths, self._total_distances
     
     def opt_2(self, route, matrix, current_total_distance):
         best = [current_total_distance, 0, 0]    
@@ -139,11 +139,13 @@ class ClosestNeighborOfSolutions:
         print("Custo da solução", custo)
     
 
-buscaLocal = ClosestNeighborOfSolutions()
 
-buscaLocal.teste()
+HeuristicAlgorithm = ClosestNeighbor()
+HeuristicAlgorithm.closestNeighbor()
+paths = HeuristicAlgorithm.get_truck_path()
+total_distances = HeuristicAlgorithm.get_truck_total_distance()
+matrix = HeuristicAlgorithm.get_distance_matrix()
 
+buscaLocal = ClosestNeighborOfSolutions(paths, total_distances, matrix)
 
-        
-    
-   
+paths, total_distances = buscaLocal.localResearch("swap", 3)
