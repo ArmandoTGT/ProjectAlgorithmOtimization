@@ -14,8 +14,7 @@ for x in f:
 vnd = VND()
 tabela = pd.DataFrame(index = otimos.keys(), columns = ["otimo", "HC - Média solução", 
 "HC - Melhor Solução", "HC - Média Tempo", "HC - gap", "(HC + VND) - Média solução", 
-"(HC + VND) - Melhor Solução", "(HC + VND) - Média Tempo", "(HC + VND) - gap", 
-"HC - path", "(HC + VND) - path", "HC - Somas", "(HC + VND) - Somas"])
+"(HC + VND) - Melhor Solução", "(HC + VND) - Média Tempo", "(HC + VND) - gap"])
 
 for situation in otimos:
     tabela["otimo"][situation] = otimos[situation]
@@ -29,14 +28,10 @@ for situation in otimos:
     
     tabela["HC - Melhor Solução"][situation] = sum(total_distances.values())
     tabela["HC - gap"][situation] = ((sum(total_distances.values()) - otimos[situation]) / otimos[situation]) * 100
-    tabela["HC - path"][situation] = str(paths)
-    tabela["HC - Somas"][situation] = str(total_distances)
 
     
     new_paths, new_total_distances = vnd.run_vnd(paths, total_distances, matrix)
 
     tabela["(HC + VND) - Melhor Solução"][situation] = sum(new_total_distances.values())
     tabela["(HC + VND) - gap"][situation] = ((sum(new_total_distances.values()) - otimos[situation]) / otimos[situation]) * 100
-    tabela["(HC + VND) - path"][situation] = str(new_paths)
-    tabela["(HC + VND) - Somas"][situation] = str(new_total_distances)
 
