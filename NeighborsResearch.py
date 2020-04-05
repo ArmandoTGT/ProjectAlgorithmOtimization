@@ -140,7 +140,7 @@ class NeighborsResearch:
     
 
 
-HeuristicAlgorithm = ClosestNeighbor()
+HeuristicAlgorithm = ClosestNeighbor("P-n19-k2")
 HeuristicAlgorithm.closestNeighbor()
 paths = HeuristicAlgorithm.get_truck_path()
 total_distances = HeuristicAlgorithm.get_truck_total_distance()
