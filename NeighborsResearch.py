@@ -1,6 +1,6 @@
 from ClosestNeighbor import ClosestNeighbor
 
-class ClosestNeighborOfSolutions:
+class NeighborsResearch:
     
     def __init__(self, paths, total_distances, matrix):
         self._paths = paths
@@ -146,6 +146,6 @@ paths = HeuristicAlgorithm.get_truck_path()
 total_distances = HeuristicAlgorithm.get_truck_total_distance()
 matrix = HeuristicAlgorithm.get_distance_matrix()
 
-buscaLocal = ClosestNeighborOfSolutions(paths, total_distances, matrix)
+buscaLocal = NeighborsResearch(paths, total_distances, matrix)
 
 paths, total_distances = buscaLocal.localResearch("swap", 3)
