@@ -1,4 +1,5 @@
 from ClosestNeighbor import ClosestNeighbor
+from tqdm import tqdm
 
 class NeighborsResearch:
     

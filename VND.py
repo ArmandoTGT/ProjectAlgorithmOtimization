@@ -6,13 +6,15 @@ class VND:
         neighborsResearch = NeighborsResearch(paths, total_distances, matrix)
         estruturas = ["2-opt", "swap", "insertion"]
         N = 0
-        while(N >= 2):
-            paths_new, total_distances_new = neighborsResearch.localResearch(estruturas[N], 10)
-            if sum(total_distances.values()) < sum(total_distances_new.values()):
+        while(N <= 2):
+            paths_new, total_distances_new = neighborsResearch.localResearch(estruturas[N], 3)
+            if sum(total_distances_new.values()) < sum(total_distances.values()):
                 total_distances = total_distances_new
                 paths = paths_new
+                neighborsResearch = NeighborsResearch(paths, total_distances, matrix)
                 N = 0
+                
             else:
-                N =+ 1
+                N += 1
 
         return paths, total_distances
