@@ -1,5 +1,6 @@
 from lerInstancias import ler_instancias
-        
+import random
+     
 class ClosestNeighbor:
     def __init__(self, situation):
         loader = ler_instancias(situation)
@@ -37,15 +38,25 @@ class ClosestNeighbor:
             closest_node = i
             # Flag que diz se o caminhão tem capacidade de visitar outro ponto, antes de voltar ao CD
             truck_capacity = False
+            list_closest_nodes = []
+            list_closest_distance = []
             for j in range(len(self._distance_matrix[i])):
-                # Desconsiderando ele mesmo, procuramos o ponto que tenha a menor distância, caiba no caminhão e
-                # ainda não tenha sido visitado
-                if j not in visited_points and closest_distance > self._distance_matrix[i][j] and truck_weight - self._demand[str(j)] >= 0:
+                # Desconsiderando ele mesmo, procuramos todos os pontos que caibão no caminhão e ainda não tenha sido visitado
+                if j not in visited_points and truck_weight - self._demand[str(j)] >= 0:
                     truck_capacity = True
-                    closest_node = j
-                    closest_distance = self._distance_matrix[i][j]
-            
+                    list_closest_nodes.append(j)
+                    list_closest_distance.append(self._distance_matrix[i][j])
+
             if truck_capacity:
+                # Escolha aleatoria dos até 5 nós mais próximos
+                list_closest_nodes, list_closest_distance = self.sort_parallel_list(list_closest_nodes, list_closest_distance)
+                list_closest_nodes, list_closest_distance = list_closest_nodes[:5], list_closest_distance[:5]
+
+                choosen_node = random.randint(0,len(list_closest_nodes) - 1)
+                closest_node =  list_closest_nodes[choosen_node]
+                closest_distance = list_closest_distance[choosen_node]
+
+                # Encaixe do nó na rota
                 truck_weight = truck_weight - self._demand[str(closest_node)]
                 self._truck_path[self._truck].append(closest_node)
                 total_distance += closest_distance
@@ -72,6 +83,17 @@ class ClosestNeighbor:
                 self._truck_path[self._truck] = []
                 self._truck_path[self._truck].append(0)
                 i = 0
+
+    def sort_parallel_list(self, key, value):
+        temp = sorted(zip(key,value), key=lambda i: i[1])
+
+        key = []
+        value = []
+
+        for a_temp, b_temp in temp:
+            key.append(a_temp)
+            value.append(b_temp)
+        return key, value
 
     def printPaths(self):
         for truck in self._truck_path:
@@ -101,6 +123,7 @@ class ClosestNeighbor:
     def get_distance_matrix(self):
         return self._distance_matrix              
 
+
 HeuristicAlgorithm = ClosestNeighbor("P-n19-k2")
 HeuristicAlgorithm.closestNeighbor()
 paths = HeuristicAlgorithm.get_truck_path()
@@ -108,15 +131,8 @@ capacities = HeuristicAlgorithm.get_truck_capacity()
 total_distances = HeuristicAlgorithm.get_truck_total_distance()
 trucks = HeuristicAlgorithm.get_number_of_trucks()
 
+print(paths, total_distances, sep = "\n\n\n\n\n")
 '''
-HeuristicAlgorithm = ClosestNeighbor()
-HeuristicAlgorithm.closestNeighbor()
-paths = HeuristicAlgorithm.get_truck_path()
-capacities = HeuristicAlgorithm.get_truck_capacity()
-total_distances = HeuristicAlgorithm.get_truck_total_distance()
-trucks = HeuristicAlgorithm.get_number_of_trucks()
-
-
 def __init__(self):
     self.HeuristicAlgorithm = ClosestNeighbor()
     HeuristicAlgorithm.closestNeighbor()
