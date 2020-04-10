@@ -11,10 +11,12 @@ class VND:
             if sum(total_distances_new.values()) < sum(total_distances.values()):
                 total_distances = total_distances_new
                 paths = paths_new
+                # print("******if", paths, total_distances, estruturas[N], sep = "\n\n\n", end = "\n\n\n")
                 neighborsResearch = NeighborsResearch(paths.copy(), total_distances.copy(), matrix)
                 N = 0
                 
             else:
+                # print("######else", paths, total_distances, estruturas[N], sep = "\n\n\n", end = "\n\n\n")
                 N += 1
                 
         return paths, total_distances

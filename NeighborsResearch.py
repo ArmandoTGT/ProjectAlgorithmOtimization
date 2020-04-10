@@ -49,7 +49,7 @@ class NeighborsResearch:
                     best[2] = p1_a2
         
         if (best[0] < current_total_distance):            
-            changed_points = range(best[1], best[2])
+            changed_points = range(best[1], best[2] + 1)
             
            
             for i, j in zip(changed_points, reversed(changed_points)):
@@ -63,38 +63,38 @@ class NeighborsResearch:
         return route, current_total_distance
     
     def insertion(self, route, matrix, current_total_distance):
-        best = [current_total_distance, 0, 0]
-        for index in range(0, len(route)):
-             if route[index] != 0:
-                 for index_insertion in range(1, len(route)-1):
-                     new_total_distance = current_total_distance 
-                     
-                     if route[index-1] != route[index_insertion] and route[index] != route[index_insertion] and route[index+1] != route[index_insertion]:
-                         
-                         
-                         new_total_distance -= matrix[route[index]][route[index+1]]
-                         new_total_distance -= matrix[route[index]][route[index-1]]                         
-                         new_total_distance -= matrix[route[index_insertion]][route[index_insertion+1]]
-                         
-                         new_total_distance += matrix[route[index-1]][route[index+1]]
-                         new_total_distance += matrix[route[index_insertion+1]][route[index]]
-                         new_total_distance += matrix[route[index]][route[index_insertion]]
-                         
-                         
-                         if(new_total_distance < best[0]):
-                             best[0] = new_total_distance
-                             best[1] = index
-                             best[2] = index_insertion
-        
-        
-        if(best[0] < current_total_distance):
-            #print(best[0])
-            aux = route.pop(best[1])            
-            route.insert(best[2], aux)
-            return route, best[0]
-            
-        
-        return route, current_total_distance           
+            best = [current_total_distance, 0, 0]
+            for index in range(1, len(route)-1):
+                for index_insertion in range(0, len(route)-1):
+                    new_total_distance = current_total_distance 
+
+                    if route[index-1] != route[index_insertion] and route[index] != route[index_insertion] and route[index+1] != route[index_insertion]:
+
+
+                        new_total_distance -= matrix[route[index]][route[index+1]]
+                        new_total_distance -= matrix[route[index]][route[index-1]]
+                        new_total_distance -= matrix[route[index_insertion]][route[index_insertion+1]]
+
+                        new_total_distance += matrix[route[index-1]][route[index+1]]
+                        new_total_distance += matrix[route[index_insertion+1]][route[index]]
+                        new_total_distance += matrix[route[index]][route[index_insertion]]
+
+
+                        if(new_total_distance < best[0]):
+                            best[0] = new_total_distance
+                            best[1] = index
+                            best[2] = index_insertion
+
+            if(best[0] < current_total_distance):
+                aux = route.pop(best[1])
+                if(best[2] < best[1]):
+                    route.insert(best[2]+1, aux)
+                else:
+                    route.insert(best[2], aux)
+                return route, best[0]
+
+
+            return route, current_total_distance
             
     def swap(self, route, matrix, current_total_distance):
         best = [current_total_distance, 0, 0]
