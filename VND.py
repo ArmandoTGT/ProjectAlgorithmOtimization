@@ -7,7 +7,7 @@ class VND:
         estruturas = ["swap", "insertion", "2-opt"]
         N = 0
         while(N <= 2):
-            paths_new, total_distances_new = neighborsResearch.localResearch(estruturas[N], 10)
+            paths_new, total_distances_new = neighborsResearch.localResearch(estruturas[N])
             if sum(total_distances_new.values()) < sum(total_distances.values()):
                 total_distances = total_distances_new
                 paths = paths_new

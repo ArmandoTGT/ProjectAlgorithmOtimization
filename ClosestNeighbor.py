@@ -131,7 +131,7 @@ capacities = HeuristicAlgorithm.get_truck_capacity()
 total_distances = HeuristicAlgorithm.get_truck_total_distance()
 trucks = HeuristicAlgorithm.get_number_of_trucks()
 
-print(paths, total_distances, sep = "\n\n\n\n\n")
+#rint(paths, total_distances, sep = "\n\n\n\n\n")
 '''
 def __init__(self):
     self.HeuristicAlgorithm = ClosestNeighbor()

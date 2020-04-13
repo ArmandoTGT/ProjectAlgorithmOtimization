@@ -8,22 +8,32 @@ class NeighborsResearch:
         self._total_distances = total_distances
         self._matrix = matrix
 
-    def localResearch(self, solution, number_of_neighbours):
+    def localResearch(self, solution):
+        continua = True
         if solution == "2-opt":
-            for iteration in range(number_of_neighbours):
-                for i in range(len(self._paths)):
+            while(continua):
+                soma_antes = sum(self._total_distances.values())
+                for i in range(len(self._paths)):                    
                     self._paths[i], self._total_distances[i] = self.opt_2(self._paths[i], self._matrix, self._total_distances[i])
-                    
+                if(soma_antes <= sum(self._total_distances.values())):
+                    continua = False
+                                       
         elif solution == "swap":
-            for iteration in range(number_of_neighbours):
+             while(continua):
+                soma_antes = sum(self._total_distances.values())
                 for i in range(len(self._paths)):
                     self._paths[i], self._total_distances[i] = self.swap(self._paths[i], self._matrix, self._total_distances[i])
+                if(soma_antes <= sum(self._total_distances.values())):
+                    continua = False    
                     
         elif solution == "insertion":
-            for iteration in range(number_of_neighbours):
+             while(continua):
+                soma_antes = sum(self._total_distances.values())
                 for i in range(len(self._paths)):
                     self._paths[i], self._total_distances[i] = self.insertion(self._paths[i], self._matrix, self._total_distances[i])
-                    
+                if(soma_antes <= sum(self._total_distances.values())):
+                    continua = False  
+                
         else:
             print("Non declared local research, choose between insertion, swap and 2-opt local researches")
         return self._paths, self._total_distances
@@ -149,4 +159,4 @@ matrix = HeuristicAlgorithm.get_distance_matrix()
 
 buscaLocal = NeighborsResearch(paths, total_distances, matrix)
 
-paths, total_distances = buscaLocal.localResearch("swap", 3)
+paths, total_distances = buscaLocal.localResearch("swap")
